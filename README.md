@@ -1,15 +1,70 @@
-# ⚡ Speed Check — Powered by OpenUtility
+# ⚡ Speed Check
 
-A sleek, lightweight, and ultra-fast internet speed test web application inspired by Fast.com. Built with pure modern HTML, CSS, and vanilla JavaScript—no heavy frameworks required.
+> A lightweight, browser-based internet speed test by OpenUtility.
 
-Features real-time network streaming via the `ReadableStream` API, dynamic SVG gauge animations, latency measurement, upload tracking, and a glassmorphic UI.
-
----
+Speed Check is a fast and minimal web application for measuring key network performance metrics without a heavy frontend framework. It uses modern browser APIs and a responsive glassmorphic interface to visualize results in real time.
 
 ## ✨ Features
 
-* **Real-Time Streaming Gauge:** Animates dynamically as data chunks arrive using pure JavaScript streams.
-* **Full Network Metrics:** Measures Unloaded Latency (Ping), Download Speed (Mbps), and Upload Speed (Mbps).
-* **Zero Dependencies:** Pure HTML5/CSS3/Vanilla JS implementation inside a single lightweight file.
-* **Glassmorphism UI:** Neon dark-mode theme built with CSS variables, SVG graphics, and responsive layouts.
-* **Branded Footer:** Clean integration of the **OpenUtility** brand mark and styling.
+- 📥 **Download Speed** — Track download throughput in Mbps.
+- 📤 **Upload Speed** — Measure upload throughput in Mbps.
+- 📡 **Latency** — Measure network response time.
+- 📊 **Live Gauge** — Visualize speed while the test is running.
+- 🌐 **Streaming Measurements** — Uses the browser `ReadableStream` API for real-time data handling.
+- 📱 **Responsive UI** — Designed for desktop and mobile screens.
+- 🪶 **Lightweight** — Built with HTML, CSS, and vanilla JavaScript.
+- 🎨 **OpenUtility Branding** — Modern dark UI with OpenUtility styling.
+
+## 🧰 Technology
+
+- HTML5
+- CSS3
+- Vanilla JavaScript (ES6+)
+- `ReadableStream` API
+- SVG graphics and animations
+- Responsive CSS
+
+No frontend framework is required.
+
+## 🚀 Getting Started
+
+Clone the repository:
+
+```bash
+git clone https://github.com/OpenUtility2/Speed-Check.git
+cd Speed-Check
+```
+
+Because the project is client-side and lightweight, it can be served with any static web server.
+
+For example, with Python:
+
+```bash
+python -m http.server 8080
+```
+
+Then open `http://localhost:8080` in your browser.
+
+## 📈 What is measured?
+
+| Metric | Description |
+| --- | --- |
+| **Latency** | Approximate network response time, normally shown in milliseconds. |
+| **Download** | Approximate downstream throughput, shown in Mbps. |
+| **Upload** | Approximate upstream throughput, shown in Mbps. |
+
+Results can vary depending on your connection, server location, browser, device, network congestion, and other background traffic.
+
+## 🔐 Privacy
+
+Speed tests necessarily exchange network data with the service/test endpoint used by the application. Do not interpret the results as a security, privacy, or ISP diagnostic guarantee.
+
+## 🧩 OpenUtility
+
+Speed Check is one of the lightweight web utilities in the OpenUtility ecosystem, focused on useful browser-based tools with simple interfaces and minimal dependencies.
+
+## 📄 License
+
+See the repository for the applicable license.
+
+Built with ❤️ by **OpenUtility**.
