@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,10 +9,12 @@
     :root {
       --bg-color: #121418;
       --card-bg: #1c1f26;
+      --card-hover: #222631;
       --ookla-orange: #ff6600;
       --text-main: #ffffff;
       --text-muted: #94a3b8;
       --border-color: rgba(255, 255, 255, 0.08);
+      --success-green: #10b981;
     }
 
     * {
@@ -34,10 +37,11 @@
 
     header {
       width: 100%;
-      max-width: 1000px;
+      max-width: 1100px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 1rem;
     }
 
     .logo {
@@ -57,12 +61,13 @@
       display: flex;
       gap: 0.6rem;
       align-items: center;
+      flex-wrap: wrap;
     }
 
-    .server-badge, .doc-btn {
+    .badge-btn {
       background: var(--card-bg);
       border: 1px solid var(--border-color);
-      padding: 0.4rem 0.8rem;
+      padding: 0.4rem 0.9rem;
       border-radius: 20px;
       font-size: 0.78rem;
       color: var(--text-muted);
@@ -74,12 +79,12 @@
       transition: border-color 0.2s ease, color 0.2s ease;
     }
 
-    .doc-btn:hover, .server-badge:hover {
+    .badge-btn:hover {
       border-color: var(--ookla-orange);
       color: var(--text-main);
     }
 
-    .server-badge strong {
+    .badge-btn strong {
       color: var(--text-main);
     }
 
@@ -88,7 +93,7 @@
       flex-direction: column;
       align-items: center;
       width: 100%;
-      max-width: 600px;
+      max-width: 700px;
       margin: auto 0;
     }
 
@@ -212,13 +217,6 @@
       background: var(--border-color);
     }
 
-    .metric-icon {
-      width: 18px;
-      height: 18px;
-      fill: var(--text-muted);
-      margin-bottom: 0.3rem;
-    }
-
     .metric-title {
       font-size: 0.7rem;
       text-transform: uppercase;
@@ -240,11 +238,11 @@
 
     .details-bar {
       width: 100%;
-      max-width: 600px;
+      max-width: 700px;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 0.8rem;
-      margin-top: 1.5rem;
+      margin-top: 1rem;
       background: var(--card-bg);
       border: 1px solid var(--border-color);
       border-radius: 10px;
@@ -266,7 +264,7 @@
 
     .live-graph {
       width: 100%;
-      max-width: 600px;
+      max-width: 700px;
       height: 50px;
       margin-top: 1rem;
       background: rgba(0,0,0,0.2);
@@ -282,7 +280,64 @@
       display: block;
     }
 
-    /* Modal Styling */
+    /* Advanced features modules */
+    .advanced-section {
+      width: 100%;
+      max-width: 700px;
+      margin-top: 1.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .panel-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .panel-card h4 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-main);
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+
+    .calc-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .calc-row span strong {
+      color: var(--text-main);
+    }
+
+    .action-btn {
+      background: var(--card-hover);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.5rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s ease;
+      text-align: center;
+    }
+
+    .action-btn:hover {
+      background: var(--ookla-orange);
+      border-color: var(--ookla-orange);
+    }
+
+    /* Modal styling */
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -308,12 +363,6 @@
       overflow-y: auto;
       padding: 1.8rem;
       box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-      animation: modalFade 0.25s ease;
-    }
-
-    @keyframes modalFade {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
     }
 
     .modal-header {
@@ -358,17 +407,38 @@
       margin-top: 0.5rem;
     }
 
-    .doc-content ul {
-      padding-left: 1.2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
+    table.history-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.78rem;
+      margin-top: 0.5rem;
+    }
+
+    table.history-table th, table.history-table td {
+      border: 1px solid var(--border-color);
+      padding: 0.5rem;
+      text-align: left;
+    }
+
+    table.history-table th {
+      background: var(--card-hover);
+      color: var(--text-main);
     }
 
     footer {
       font-size: 0.75rem;
       color: var(--text-muted);
       text-align: center;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 650px) {
+      .advanced-section {
+        grid-template-columns: 1fr;
+      }
+      .details-bar {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -379,12 +449,10 @@
       Speedtest <span>by OpenUtility</span>
     </div>
     <div class="header-right">
-      <button class="doc-btn" onclick="openModal('docsModal')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
-        Docs & Guide
-      </button>
-      <div class="server-badge">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+      <button class="badge-btn" onclick="openModal('docsModal')">Docs & Guide</button>
+      <button class="badge-btn" onclick="openModal('historyModal')">Test Logs</button>
+      <button class="badge-btn" onclick="openModal('supportModal')">Support Ticket</button>
+      <div class="badge-btn" style="cursor: default;">
         Node: <strong id="serverName">Cloudflare Edge</strong>
       </div>
     </div>
@@ -411,33 +479,44 @@
 
     <div class="metrics-row">
       <div class="metric-box">
-        <svg class="metric-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
         <div class="metric-title">Ping</div>
         <div class="metric-val" id="pingVal">-</div>
         <div class="metric-subval" id="jitterVal">Jitter: -</div>
       </div>
       <div class="metric-box">
-        <svg class="metric-icon" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
         <div class="metric-title">Download</div>
         <div class="metric-val" id="dlVal">-</div>
-        <div class="metric-subval" id="dlSub">-</div>
+        <div class="metric-subval" id="lossVal">Loss: -</div>
       </div>
       <div class="metric-box">
-        <svg class="metric-icon" viewBox="0 0 24 24"><path d="M9 15h6v6h-6v-6zM15 3H9v6h6V3zM5 13h14v-2H5v2z"/></svg>
         <div class="metric-title">Upload</div>
         <div class="metric-val" id="ulVal">-</div>
-        <div class="metric-subval" id="ulSub">-</div>
+        <div class="metric-subval" id="ulSub">Ready</div>
       </div>
     </div>
 
     <div class="details-bar">
       <div class="details-item">
-        <span>Network / ISP / Mobile Operator</span>
+        <span>Network Operator / ISP</span>
         <strong id="ispVal">Detecting...</strong>
       </div>
       <div class="details-item">
         <span>IP Address & Location</span>
         <strong id="ipVal">Detecting...</strong>
+      </div>
+    </div>
+
+    <div class="advanced-section">
+      <div class="panel-card">
+        <h4>Real-World Task Estimator</h4>
+        <div class="calc-row"><span>60GB Game Download:</span> <span id="estGame">-</span></div>
+        <div class="calc-row"><span>500GB Cloud Backup:</span> <span id="estBackup">-</span></div>
+        <div class="calc-row"><span>4K Video Stream:</span> <span id="estStream">Supported</span></div>
+      </div>
+      <div class="panel-card">
+        <h4>Diagnostic Tools</h4>
+        <button class="action-btn" onclick="runPacketLossTest()">Run Packet Loss Probe</button>
+        <button class="action-btn" onclick="openModal('supportModal')">Format ISP Report</button>
       </div>
     </div>
   </main>
@@ -450,27 +529,61 @@
         <button class="close-modal" onclick="closeModal('docsModal')">&times;</button>
       </div>
       <div class="doc-content">
-        <h3>1. Understanding Your Metrics</h3>
-        <p><strong>Ping (Latency):</strong> The time it takes for data packets to make a round trip from your device to the server. Lower ping (&lt;30ms) is crucial for real-time applications like online gaming, video calls, and live streaming.</p>
-        <p><strong>Jitter:</strong> The variance in ping over time. High jitter indicates unstable connection routing, causing lag spikes or stuttering during voice and video communication.</p>
-        <p><strong>Download Speed:</strong> Measures how fast data travels from the internet to your device. Essential for streaming 4K video, downloading large games, and browsing websites.</p>
-        <p><strong>Upload Speed:</strong> Measures how fast your device sends data to the cloud. Important for video conference broadcasting, cloud backups, and online multiplayer uploads.</p>
+        <h3>1. Metrics Overview</h3>
+        <p><strong>Ping:</strong> Measures the round-trip latency of network requests. Lower ping (&lt;30ms) is ideal for real-time collaboration, gaming, and VoIP communication.</p>
+        <p><strong>Jitter:</strong> Measures the variability in ping over consecutive requests. High jitter signifies unstable routing and can cause packet stutter during video conference streams.</p>
+        <p><strong>Packet Loss:</strong> The percentage of data packets that fail to reach their destination. Excessive packet loss leads to disconnects and lag spikes.</p>
+        
+        <h3>2. Mobile Operator Detection</h3>
+        <p>Our engine automatically analyzes ASN metadata and IP registry information to identify your carrier or broadband provider, even when switching between broadband and mobile data (4G/5G LTE).</p>
+      </div>
+    </div>
+  </div>
 
-        <h3>2. What is Mobile Operator Detection?</h3>
-        <p>Our intelligent routing engine parses autonomous system numbers (ASN) and organization metadata associated with your active IP connection. When browsing via cellular data (e.g., 4G/5G LTE), the system automatically detects cellular network providers to help you benchmark mobile data performance accurately.</p>
+  <!-- History Modal -->
+  <div class="modal-overlay" id="historyModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">Historical Test Logs</div>
+        <button class="close-modal" onclick="closeModal('historyModal')">&times;</button>
+      </div>
+      <div class="doc-content">
+        <p>Previous test results are stored locally on your device for troubleshooting and reference.</p>
+        <div style="display: flex; gap: 0.8rem; margin-top: 0.5rem;">
+          <button class="action-btn" onclick="exportCSV()">Download CSV Report</button>
+          <button class="action-btn" onclick="clearHistory()" style="background: #7f1d1d;">Clear Logs</button>
+        </div>
+        <div style="max-height: 300px; overflow-y: auto; margin-top: 0.5rem;">
+          <table class="history-table">
+            <thead>
+              <tr><th>Timestamp</th><th>Ping</th><th>Download</th><th>Upload</th><th>Operator</th></tr>
+            </thead>
+            <tbody id="historyTableBody">
+              <tr><td colspan="5" style="text-align: center;">No recorded test sessions yet.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        <h3>3. Troubleshooting Slow Internet Speeds</h3>
-        <ul>
-          <li><strong>Restart your equipment:</strong> Power cycle your broadband router or mobile hotspot to clear cached routing tables.</li>
-          <li><strong>Switch bands:</strong> If on Wi-Fi, toggle between 2.4GHz (longer range, lower speed) and 5GHz/6GHz (shorter range, maximum speed).</li>
-          <li><strong>Reduce interference:</strong> Keep routers away from thick walls, dense concrete, and electronic appliances.</li>
-        </ul>
+  <!-- Support Ticket Modal -->
+  <div class="modal-overlay" id="supportModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">ISP Support Ticket Formatter</div>
+        <button class="close-modal" onclick="closeModal('supportModal')">&times;</button>
+      </div>
+      <div class="doc-content">
+        <p>Copy this structured diagnostic report to submit to your internet service provider support desk.</p>
+        <textarea id="supportText" style="width: 100%; height: 160px; background: var(--card-hover); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.8rem; font-size: 0.8rem; resize: none;" readonly></textarea>
+        <button class="action-btn" onclick="copySupportText()">Copy Report to Clipboard</button>
       </div>
     </div>
   </div>
 
   <footer>
-    <span>Powered by OpenUtility &bull; Speedtest Engine</span>
+    <span>Powered by OpenUtility &bull; Professional Network Diagnostics Engine</span>
   </footer>
 
   <script>
@@ -484,14 +597,20 @@
     const pingVal = document.getElementById('pingVal');
     const jitterVal = document.getElementById('jitterVal');
     const dlVal = document.getElementById('dlVal');
+    const lossVal = document.getElementById('lossVal');
     const ulVal = document.getElementById('ulVal');
     const ispVal = document.getElementById('ispVal');
     const ipVal = document.getElementById('ipVal');
+    
+    const estGame = document.getElementById('estGame');
+    const estBackup = document.getElementById('estBackup');
+    const estStream = document.getElementById('estStream');
     const graphContainer = document.getElementById('graphContainer');
 
     const canvas = document.getElementById('waveCanvas');
     const ctx = canvas.getContext('2d');
     let chartPoints = [];
+    let latestTestResult = null;
 
     function resizeCanvas() {
       canvas.width = canvas.parentElement.clientWidth;
@@ -501,6 +620,8 @@
     resizeCanvas();
 
     function openModal(id) {
+      if (id === 'historyModal') renderHistoryTable();
+      if (id === 'supportModal') generateSupportText();
       document.getElementById(id).style.display = 'flex';
     }
 
@@ -547,41 +668,54 @@
         ipVal.innerText = `${data.ip || '127.0.0.1'} (${data.city || ''}, ${data.country_name || ''})`;
         
         let operatorName = data.org || data.asn || data.company || 'Broadband / ISP';
-        const asnName = (data.asn || '').toLowerCase();
-        const orgName = (data.org || '').toLowerCase();
-        const combined = orgName + ' ' + asnName;
+        const combined = (operatorName + ' ' + (data.asn || '')).toLowerCase();
 
-        if (combined.includes('jazz') || combined.includes('mobilink') || combined.includes('pmcl')) {
-          operatorName = 'Jazz Mobile (Cellular Data)';
-        } else if (combined.includes('telenor')) {
-          operatorName = 'Telenor Mobile (Cellular Data)';
-        } else if (combined.includes('zong') || combined.includes('cmpak')) {
-          operatorName = 'Zong 4G (Cellular Data)';
-        } else if (combined.includes('uphone') || combined.includes('ptcl')) {
-          operatorName = 'Ufone / PTCL (Broadband/Cellular)';
-        } else if (combined.includes('airtel')) {
-          operatorName = 'Airtel Mobile (Cellular Data)';
-        } else if (combined.includes('jio')) {
-          operatorName = 'Reliance Jio (Cellular Data)';
-        } else if (combined.includes('vodafone') || combined.includes('vi ')) {
-          operatorName = 'Vodafone Idea (Cellular Data)';
-        } else if (combined.includes('verizon')) {
-          operatorName = 'Verizon Wireless (Cellular/ISP)';
-        } else if (combined.includes('at&t')) {
-          operatorName = 'AT&T Mobility (Cellular/ISP)';
-        } else if (combined.includes('t-mobile') || combined.includes('sprint')) {
-          operatorName = 'T-Mobile Cellular';
-        } else if (combined.includes('orange')) {
-          operatorName = 'Orange Mobile (Cellular)';
-        } else if (combined.includes('cellular') || combined.includes('mobile') || combined.includes('lte') || combined.includes('gsm')) {
-          operatorName += ' (Cellular Network)';
-        }
+        if (combined.includes('jazz') || combined.includes('mobilink')) operatorName = 'Jazz Mobile Network';
+        else if (combined.includes('telenor')) operatorName = 'Telenor Mobile Network';
+        else if (combined.includes('zong') || combined.includes('cmpak')) operatorName = 'Zong 4G Network';
+        else if (combined.includes('uphone') || combined.includes('ptcl')) operatorName = 'Ufone / PTCL';
+        else if (combined.includes('airtel')) operatorName = 'Airtel Mobile Network';
+        else if (combined.includes('jio')) operatorName = 'Reliance Jio Network';
+        else if (combined.includes('verizon')) operatorName = 'Verizon Wireless';
+        else if (combined.includes('at&t')) operatorName = 'AT&T Mobility';
+        else if (combined.includes('t-mobile')) operatorName = 'T-Mobile Cellular';
 
         ispVal.innerText = operatorName;
       } catch (e) {
-        ipVal.innerText = 'Connected';
-        ispVal.innerText = 'Standard Connection';
+        ipVal.innerText = 'Connected IP';
+        ispVal.innerText = 'Standard Broadband ISP';
       }
+    }
+
+    async function runPacketLossTest() {
+      lossVal.innerText = 'Testing...';
+      let fails = 0;
+      const probes = 10;
+      for (let i = 0; i < probes; i++) {
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 2000);
+          await fetch(PING_URL + '&p=' + Math.random(), { cache: 'no-store', signal: controller.signal });
+          clearTimeout(timeoutId);
+        } catch (err) {
+          fails++;
+        }
+      }
+      const lossPct = Math.round((fails / probes) * 100);
+      lossVal.innerText = `Loss: ${lossPct}%`;
+    }
+
+    function updateCalculators(dlSpeed) {
+      if (!dlSpeed || dlSpeed <= 0) return;
+      // 60GB = 480 Gigabits
+      const secondsGame = 480000 / dlSpeed;
+      estGame.innerHTML = `<strong>${Math.floor(secondsGame / 60)}m ${Math.floor(secondsGame % 60)}s</strong>`;
+      
+      // 500GB = 4000 Gigabits
+      const hoursBackup = (4000000 / dlSpeed) / 3600;
+      estBackup.innerHTML = `<strong>${hoursBackup.toFixed(1)} hours</strong>`;
+      
+      estStream.innerHTML = dlSpeed >= 25 ? '<strong>4K Ultra HD Supported</strong>' : '<strong>HD 1080p Supported</strong>';
     }
 
     async function startSpeedtest() {
@@ -593,9 +727,11 @@
       pingVal.innerText = '-';
       jitterVal.innerText = 'Jitter: -';
       dlVal.innerText = '-';
+      lossVal.innerText = 'Loss: 0%';
       ulVal.innerText = '-';
 
       try {
+        // 1. Ping Phase
         phaseLabel.innerText = 'Ping Test';
         const pings = [];
         for (let i = 0; i < 4; i++) {
@@ -612,8 +748,9 @@
         speedUnit.innerText = 'ms';
         setGauge(basePing, 200);
 
-        await new Promise(r => setTimeout(r, 600));
+        await new Promise(r => setTimeout(r, 400));
 
+        // 2. Download Phase
         phaseLabel.innerText = 'Download';
         speedUnit.innerText = 'Mbps';
         const payloadSize = 25000000;
@@ -640,9 +777,11 @@
           }
         }
         dlVal.innerText = `${finalDl} Mbps`;
+        updateCalculators(finalDl);
 
-        await new Promise(r => setTimeout(r, 600));
+        await new Promise(r => setTimeout(r, 400));
 
+        // 3. Upload Phase
         phaseLabel.innerText = 'Upload';
         chartPoints = [];
         const upBytes = 3000000;
@@ -655,7 +794,7 @@
           const upDuration = (performance.now() - upStart) / 1000;
           finalUl = Number(((upBytes * 8) / upDuration / 1000000).toFixed(1));
         } catch (err) {
-          finalUl = (finalDl * 0.3).toFixed(1);
+          finalUl = Number((finalDl * 0.3).toFixed(1));
         }
 
         ulVal.innerText = `${finalUl} Mbps`;
@@ -666,13 +805,92 @@
         goBtn.style.display = 'flex';
         goBtn.innerText = 'TEST AGAIN';
 
+        // Save to History
+        latestTestResult = {
+          timestamp: new Date().toLocaleString(),
+          ping: `${basePing} ms`,
+          download: `${finalDl} Mbps`,
+          upload: `${finalUl} Mbps`,
+          operator: ispVal.innerText
+        };
+        saveToHistory(latestTestResult);
+
       } catch (e) {
         phaseLabel.innerText = 'Error Occurred';
         goBtn.style.display = 'flex';
       }
     }
 
+    function saveToHistory(result) {
+      let history = JSON.parse(localStorage.getItem('openutility_speed_history') || '[]');
+      history.unshift(result);
+      if (history.length > 20) history.pop();
+      localStorage.setItem('openutility_speed_history', JSON.stringify(history));
+    }
+
+    function renderHistoryTable() {
+      const tbody = document.getElementById('historyTableBody');
+      const history = JSON.parse(localStorage.getItem('openutility_speed_history') || '[]');
+      if (history.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align: center;">No recorded test sessions yet.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = history.map(item => `
+        <tr>
+          <td>${item.timestamp}</td>
+          <td>${item.ping}</td>
+          <td>${item.download}</td>
+          <td>${item.upload}</td>
+          <td>${item.operator}</td>
+        </tr>
+      `).join('');
+    }
+
+    function clearHistory() {
+      localStorage.removeItem('openutility_speed_history');
+      renderHistoryTable();
+    }
+
+    function exportCSV() {
+      const history = JSON.parse(localStorage.getItem('openutility_speed_history') || '[]');
+      if (history.length === 0) return alert('No history to export.');
+      let csv = 'Timestamp,Ping,Download,Upload,Operator\n';
+      history.forEach(i => {
+        csv += `"${i.timestamp}","${i.ping}","${i.download}","${i.upload}","${i.operator}"\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.setAttribute('href', url);
+      a.setAttribute('download', 'speedtest_report.csv');
+      a.click();
+    }
+
+    function generateSupportText() {
+      const res = latestTestResult || { timestamp: 'N/A', ping: 'N/A', download: 'N/A', upload: 'N/A', operator: ispVal.innerText };
+      const text = `ISP Technical Support Diagnostic Report
+-----------------------------------------
+Timestamp: ${res.timestamp}
+Network Operator / ISP: ${res.operator}
+Connection IP / Location: ${ipVal.innerText}
+-----------------------------------------
+Measured Ping: ${res.ping}
+Download Speed: ${res.download}
+Upload Speed: ${res.upload}
+-----------------------------------------
+Issue Description: Experiencing degraded throughput and intermittent latency variance. Please check subscriber routing line.`;
+      document.getElementById('supportText').value = text;
+    }
+
+    function copySupportText() {
+      const textarea = document.getElementById('supportText');
+      textarea.select();
+      document.execCommand('copy');
+      alert('Diagnostic report copied to clipboard.');
+    }
+
     window.onload = loadClientMeta;
   </script>
 </body>
 </html>
+```
