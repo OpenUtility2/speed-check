@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Speedtest by Ookla Style - OpenUtility</title>
+  <title>Speedtest by OpenUtility</title>
   <style>
     :root {
       --bg-color: #121418;
       --card-bg: #1c1f26;
-      --accent-red: #00e676; /* Modernized accent or classic Ookla orange #ff6600 */
       --ookla-orange: #ff6600;
       --text-main: #ffffff;
       --text-muted: #94a3b8;
@@ -64,7 +63,6 @@
       display: flex;
       align-items: center;
       gap: 0.4rem;
-      cursor: pointer;
     }
 
     .server-badge strong {
@@ -80,7 +78,6 @@
       margin: auto 0;
     }
 
-    /* Speedtest.net Style Big Circular Gauge */
     .gauge-container {
       position: relative;
       width: 260px;
@@ -102,7 +99,7 @@
       stroke: rgba(255, 255, 255, 0.05);
       stroke-width: 12;
       stroke-dasharray: 471;
-      stroke-dashoffset: 118; /* 270 degree arc */
+      stroke-dashoffset: 118;
       stroke-linecap: round;
     }
 
@@ -113,7 +110,7 @@
       stroke-dasharray: 471;
       stroke-dashoffset: 471;
       stroke-linecap: round;
-      transition: stroke-dashoffset 0.2s ease, stroke 0.3s ease;
+      transition: stroke-dashoffset 0.2s ease;
     }
 
     .gauge-center {
@@ -148,7 +145,6 @@
       letter-spacing: 1px;
     }
 
-    /* Big Start Button */
     .go-btn {
       width: 130px;
       height: 130px;
@@ -173,11 +169,6 @@
       box-shadow: 0 0 40px rgba(255, 102, 0, 0.6);
     }
 
-    .go-btn:active {
-      transform: scale(0.95);
-    }
-
-    /* 3-Column Metrics Panel (Ping, Download, Upload) */
     .metrics-row {
       width: 100%;
       display: grid;
@@ -233,13 +224,12 @@
       margin-top: 0.1rem;
     }
 
-    /* Secondary Details Footer Bar */
     .details-bar {
       width: 100%;
       max-width: 600px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
       margin-top: 1.5rem;
       background: var(--card-bg);
       border: 1px solid var(--border-color);
@@ -249,11 +239,17 @@
       color: var(--text-muted);
     }
 
-    .details-bar strong {
-      color: var(--text-main);
+    .details-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
     }
 
-    /* Real-Time Live Graph Line */
+    .details-item strong {
+      color: var(--text-main);
+      font-size: 0.85rem;
+    }
+
     .live-graph {
       width: 100%;
       max-width: 600px;
@@ -285,14 +281,13 @@
     <div class="logo">
       Speedtest <span>by OpenUtility</span>
     </div>
-    <div class="server-badge" id="serverSelector">
+    <div class="server-badge">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-      Server: <strong id="serverName">Cloudflare Edge</strong>
+      Node: <strong id="serverName">Cloudflare Edge</strong>
     </div>
   </header>
 
   <main>
-    <!-- Speedtest.net Style Gauge Container -->
     <div class="gauge-container">
       <svg class="gauge-svg" viewBox="0 0 200 200">
         <circle class="gauge-track" cx="100" cy="100" r="75"></circle>
@@ -305,15 +300,12 @@
       </div>
     </div>
 
-    <!-- Classic Ookla Big GO Button -->
     <button class="go-btn" id="goBtn" onclick="startSpeedtest()">GO</button>
 
-    <!-- Live Performance Waveform Chart -->
     <div class="live-graph" id="graphContainer">
       <canvas id="waveCanvas"></canvas>
     </div>
 
-    <!-- 3-Column Metrics (Ping, Download, Upload) -->
     <div class="metrics-row">
       <div class="metric-box">
         <svg class="metric-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
@@ -335,10 +327,15 @@
       </div>
     </div>
 
-    <!-- Connection Info Bar -->
     <div class="details-bar">
-      <div>ISP: <strong id="ispVal">Detecting...</strong></div>
-      <div>IP: <strong id="ipVal">Detecting...</strong></div>
+      <div class="details-item">
+        <span>Network / ISP / Mobile Operator</span>
+        <strong id="ispVal">Detecting...</strong>
+      </div>
+      <div class="details-item">
+        <span>IP Address & Location</span>
+        <strong id="ipVal">Detecting...</strong>
+      </div>
     </div>
   </main>
 
@@ -391,8 +388,8 @@
     }
 
     function setGauge(val, maxVal = 250) {
-      const circumference = 471; // 270 deg arc
-      const arcLength = circumference * 0.75; // active arc portion
+      const circumference = 471;
+      const arcLength = circumference * 0.75;
       const clamped = Math.min(val, maxVal);
       const offset = arcLength - (clamped / maxVal) * arcLength;
       gaugeFill.style.strokeDashoffset = circumference - arcLength + offset;
@@ -402,11 +399,45 @@
       try {
         const res = await fetch('https://ipapi.co/json/');
         const data = await res.json();
-        ipVal.innerText = data.ip || '127.0.0.1';
-        ispVal.innerText = data.org || data.country_name || 'Broadband';
+        
+        ipVal.innerText = `${data.ip || '127.0.0.1'} (${data.city || ''}, ${data.country_name || ''})`;
+        
+        let operatorName = data.org || data.asn || data.company || 'Broadband / ISP';
+        const asnName = (data.asn || '').toLowerCase();
+        const orgName = (data.org || '').toLowerCase();
+        const combined = orgName + ' ' + asnName;
+
+        // Smart Mobile Operator Detection Mapping (Global & Regional Carriers)
+        if (combined.includes('jazz') || combined.includes('mobilink') || combined.includes('pmcl')) {
+          operatorName = 'Jazz Mobile (Cellular Data)';
+        } else if (combined.includes('telenor')) {
+          operatorName = 'Telenor Mobile (Cellular Data)';
+        } else if (combined.includes('zong') || combined.includes('cmpak')) {
+          operatorName = 'Zong 4G (Cellular Data)';
+        } else if (combined.includes('uphone') || combined.includes('ptcl')) {
+          operatorName = 'Ufone / PTCL (Broadband/Cellular)';
+        } else if (combined.includes('airtel')) {
+          operatorName = 'Airtel Mobile (Cellular Data)';
+        } else if (combined.includes('jio')) {
+          operatorName = 'Reliance Jio (Cellular Data)';
+        } else if (combined.includes('vodafone') || combined.includes('vi ')) {
+          operatorName = 'Vodafone Idea (Cellular Data)';
+        } else if (combined.includes('verizon')) {
+          operatorName = 'Verizon Wireless (Cellular/ISP)';
+        } else if (combined.includes('at&t')) {
+          operatorName = 'AT&T Mobility (Cellular/ISP)';
+        } else if (combined.includes('t-mobile') || combined.includes('sprint')) {
+          operatorName = 'T-Mobile Cellular';
+        } else if (combined.includes('orange')) {
+          operatorName = 'Orange Mobile (Cellular)';
+        } else if (combined.includes('cellular') || combined.includes('mobile') || combined.includes('lte') || combined.includes('gsm')) {
+          operatorName += ' (Cellular Network)';
+        }
+
+        ispVal.innerText = operatorName;
       } catch (e) {
         ipVal.innerText = 'Connected';
-        ispVal.innerText = 'Local Network';
+        ispVal.innerText = 'Standard Connection';
       }
     }
 
@@ -444,7 +475,7 @@
         // 2. DOWNLOAD PHASE
         phaseLabel.innerText = 'Download';
         speedUnit.innerText = 'Mbps';
-        const payloadSize = 25000000; // 25MB
+        const payloadSize = 25000000;
         const startTime = performance.now();
         let loaded = 0;
         let finalDl = 0;
@@ -474,17 +505,17 @@
         // 3. UPLOAD PHASE
         phaseLabel.innerText = 'Upload';
         chartPoints = [];
-        const upBytes = 3000000; // 3MB chunk
+        const upBytes = 3000000;
         const upData = new Uint8Array(upBytes);
         const upStart = performance.now();
         
         let finalUl = 0;
         try {
-          const upRes = await fetch('https://httpbin.org/post', { method: 'POST', body: upData, cache: 'no-store' });
+          await fetch('https://httpbin.org/post', { method: 'POST', body: upData, cache: 'no-store' });
           const upDuration = (performance.now() - upStart) / 1000;
           finalUl = Number(((upBytes * 8) / upDuration / 1000000).toFixed(1));
         } catch (err) {
-          finalUl = (finalDl * 0.3).toFixed(1); // fallback estimation if CORS blocks post
+          finalUl = (finalDl * 0.3).toFixed(1);
         }
 
         ulVal.innerText = `${finalUl} Mbps`;
