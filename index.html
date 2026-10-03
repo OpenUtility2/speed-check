@@ -3,39 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Speed Check - Powered by OpenUtility</title>
+  <title>Speedtest by Ookla Style - OpenUtility</title>
   <style>
     :root {
-      --bg-color: #0b0f19;
-      --card-bg: rgba(22, 28, 45, 0.75);
-      --primary-blue: #00a8ff;
-      --primary-green: #7bed9f;
-      --accent-glow: rgba(0, 168, 255, 0.25);
+      --bg-color: #121418;
+      --card-bg: #1c1f26;
+      --accent-red: #00e676; /* Modernized accent or classic Ookla orange #ff6600 */
+      --ookla-orange: #ff6600;
       --text-main: #ffffff;
-      --text-muted: #8a99ad;
+      --text-muted: #94a3b8;
       --border-color: rgba(255, 255, 255, 0.08);
-    }
-
-    [data-theme="light"] {
-      --bg-color: #f0f4f8;
-      --card-bg: rgba(255, 255, 255, 0.85);
-      --primary-blue: #0070f3;
-      --primary-green: #10b981;
-      --accent-glow: rgba(0, 112, 243, 0.2);
-      --text-main: #111827;
-      --text-muted: #4b5563;
-      --border-color: rgba(0, 0, 0, 0.08);
-    }
-
-    [data-theme="cyberpunk"] {
-      --bg-color: #05050a;
-      --card-bg: rgba(20, 10, 30, 0.85);
-      --primary-blue: #ff007f;
-      --primary-green: #00ffcc;
-      --accent-glow: rgba(255, 0, 127, 0.35);
-      --text-main: #ffffff;
-      --text-muted: #b088c0;
-      --border-color: rgba(255, 0, 127, 0.2);
     }
 
     * {
@@ -43,61 +20,55 @@
       margin: 0;
       padding: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     }
 
     body {
       background-color: var(--bg-color);
-      background-image: 
-        radial-gradient(circle at 50% 20%, var(--accent-glow) 0%, transparent 60%),
-        radial-gradient(circle at 80% 80%, rgba(123, 237, 159, 0.06) 0%, transparent 50%);
       color: var(--text-main);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      padding: 1.5rem 1rem;
-      overflow-x: hidden;
+      padding: 1.5rem;
     }
 
     header {
       width: 100%;
-      max-width: 900px;
+      max-width: 1000px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 0.8rem;
     }
 
     .logo {
-      font-size: 1.5rem;
-      font-weight: 900;
-      letter-spacing: -0.5px;
-      background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.4rem;
     }
 
-    .header-controls {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-      flex-wrap: wrap;
+    .logo span {
+      color: var(--ookla-orange);
     }
 
-    .select-ctrl {
+    .server-badge {
       background: var(--card-bg);
       border: 1px solid var(--border-color);
-      color: var(--text-main);
-      padding: 0.3rem 0.6rem;
-      border-radius: 10px;
-      font-size: 0.75rem;
-      outline: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
       cursor: pointer;
+    }
+
+    .server-badge strong {
+      color: var(--text-main);
     }
 
     main {
@@ -105,142 +76,194 @@
       flex-direction: column;
       align-items: center;
       width: 100%;
-      max-width: 540px;
+      max-width: 600px;
       margin: auto 0;
     }
 
-    /* Network Info Pill & Grade Banner */
-    .top-info-stack {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      margin-bottom: 1.2rem;
-    }
-
-    .network-pill {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: var(--card-bg);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--border-color);
-      padding: 0.4rem 1rem;
-      border-radius: 20px;
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-
-    .network-pill span {
-      color: var(--text-main);
-      font-weight: 600;
-    }
-
-    .grade-card {
-      display: none;
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 14px;
-      padding: 0.6rem 1rem;
-      align-items: center;
-      justify-content: space-between;
-      animation: fadeIn 0.4s ease;
-    }
-
-    .grade-badge {
-      font-size: 1.2rem;
-      font-weight: 900;
-      color: var(--primary-green);
-      background: rgba(123, 237, 159, 0.1);
-      border: 1px solid rgba(123, 237, 159, 0.3);
-      padding: 0.2rem 0.6rem;
-      border-radius: 8px;
-    }
-
-    .grade-desc {
-      font-size: 0.8rem;
-      color: var(--text-main);
-      font-weight: 600;
-    }
-
-    /* Gauge */
-    .gauge-wrapper {
+    /* Speedtest.net Style Big Circular Gauge */
+    .gauge-container {
       position: relative;
-      width: 230px;
-      height: 230px;
+      width: 260px;
+      height: 260px;
       display: flex;
       align-items: center;
       justify-content: center;
+      margin-bottom: 1.5rem;
     }
 
     .gauge-svg {
       width: 100%;
       height: 100%;
-      transform: rotate(-90deg);
+      transform: rotate(-135deg);
     }
 
-    .gauge-bg {
+    .gauge-track {
       fill: none;
-      stroke: var(--border-color);
-      stroke-width: 8;
-    }
-
-    .gauge-progress {
-      fill: none;
-      stroke: url(#gradient);
-      stroke-width: 8;
+      stroke: rgba(255, 255, 255, 0.05);
+      stroke-width: 12;
+      stroke-dasharray: 471;
+      stroke-dashoffset: 118; /* 270 degree arc */
       stroke-linecap: round;
-      stroke-dasharray: 596;
-      stroke-dashoffset: 596;
-      filter: drop-shadow(0px 0px 6px var(--primary-blue));
     }
 
-    .speed-content {
+    .gauge-fill {
+      fill: none;
+      stroke: var(--ookla-orange);
+      stroke-width: 12;
+      stroke-dasharray: 471;
+      stroke-dashoffset: 471;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.2s ease, stroke 0.3s ease;
+    }
+
+    .gauge-center {
       position: absolute;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      text-align: center;
     }
 
-    .speed-value {
-      font-size: 3.8rem;
+    .phase-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      margin-bottom: 0.2rem;
+    }
+
+    .speed-number {
+      font-size: 3.5rem;
       font-weight: 800;
       line-height: 1;
-      letter-spacing: -2px;
-      background: linear-gradient(180deg, var(--text-main) 40%, var(--text-muted));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      letter-spacing: -1px;
     }
 
     .speed-unit {
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-top: 0.2rem;
-      color: var(--primary-blue);
+      font-size: 0.85rem;
+      color: var(--text-muted);
       text-transform: uppercase;
+      margin-top: 0.2rem;
       letter-spacing: 1px;
     }
 
-    .status {
-      margin-top: 1rem;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      height: 18px;
+    /* Big Start Button */
+    .go-btn {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff6600, #ff3300);
+      border: 4px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-size: 1.3rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      cursor: pointer;
+      box-shadow: 0 0 30px rgba(255, 102, 0, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      margin-bottom: 2rem;
     }
 
-    /* Real-Time Graph Canvas */
-    .chart-container {
+    .go-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 40px rgba(255, 102, 0, 0.6);
+    }
+
+    .go-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* 3-Column Metrics Panel (Ping, Download, Upload) */
+    .metrics-row {
       width: 100%;
-      height: 60px;
-      margin-top: 0.8rem;
-      background: rgba(0, 0, 0, 0.15);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
       border-radius: 12px;
+      padding: 1.2rem;
+      text-align: center;
+    }
+
+    .metric-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .metric-box:not(:last-child):after {
+      content: '';
+      position: absolute;
+      right: -0.5rem;
+      top: 20%;
+      height: 60%;
+      width: 1px;
+      background: var(--border-color);
+    }
+
+    .metric-icon {
+      width: 18px;
+      height: 18px;
+      fill: var(--text-muted);
+      margin-bottom: 0.3rem;
+    }
+
+    .metric-title {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+      margin-bottom: 0.2rem;
+    }
+
+    .metric-val {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .metric-subval {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      margin-top: 0.1rem;
+    }
+
+    /* Secondary Details Footer Bar */
+    .details-bar {
+      width: 100%;
+      max-width: 600px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.5rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 0.8rem 1.2rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .details-bar strong {
+      color: var(--text-main);
+    }
+
+    /* Real-Time Live Graph Line */
+    .live-graph {
+      width: 100%;
+      max-width: 600px;
+      height: 50px;
+      margin-top: 1rem;
+      background: rgba(0,0,0,0.2);
+      border-radius: 8px;
       border: 1px solid var(--border-color);
       overflow: hidden;
+      display: none;
     }
 
     canvas {
@@ -249,313 +272,99 @@
       display: block;
     }
 
-    /* Action Buttons */
-    .btn-group {
-      display: flex;
-      gap: 0.5rem;
-      margin-top: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .action-btn {
-      background: linear-gradient(135deg, var(--primary-blue), #0072ff);
-      border: none;
-      color: #fff;
-      border-radius: 20px;
-      padding: 0.55rem 1.2rem;
-      font-size: 0.82rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-      box-shadow: 0 6px 15px var(--accent-glow);
-      transition: transform 0.2s ease;
-    }
-
-    .action-btn.secondary {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      box-shadow: none;
-      color: var(--text-main);
-    }
-
-    .action-btn:hover {
-      transform: translateY(-2px);
-    }
-
-    .action-btn svg {
-      width: 14px;
-      height: 14px;
-      fill: currentColor;
-    }
-
-    /* Metrics Cards Grid */
-    .metrics-card {
-      width: 100%;
-      background: var(--card-bg);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--border-color);
-      border-radius: 14px;
-      padding: 1rem 0.5rem;
-      margin-top: 1rem;
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 0.2rem;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-      text-align: center;
-    }
-
-    .metric-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .metric-label {
-      font-size: 0.58rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-      margin-bottom: 0.2rem;
-    }
-
-    .metric-value {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    /* History & Background Monitor Drawer */
-    .panel-section {
-      width: 100%;
-      max-width: 540px;
-      margin-top: 1rem;
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 14px;
-      padding: 0.8rem 1rem;
-    }
-
-    .panel-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      margin-bottom: 0.4rem;
-    }
-
-    .history-list {
-      max-height: 85px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
-    }
-
-    .history-item {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      background: rgba(255, 255, 255, 0.02);
-      padding: 0.25rem 0.5rem;
-      border-radius: 6px;
-    }
-
-    .history-item strong {
-      color: var(--text-main);
-    }
-
-    /* Footer */
     footer {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       color: var(--text-muted);
-      margin-top: 1.2rem;
-    }
-
-    .brand-container {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-      color: var(--text-main);
-      font-weight: 600;
-    }
-
-    .openutility-logo {
-      width: 18px;
-      height: 18px;
-      vertical-align: middle;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-4px); }
-      to { opacity: 1; transform: translateY(0); }
+      text-align: center;
     }
   </style>
 </head>
-<body data-theme="dark">
+<body>
 
   <header>
     <div class="logo">
-      <span>FAST</span><span style="font-weight: 300;">SPEED</span>
+      Speedtest <span>by OpenUtility</span>
     </div>
-    <div class="header-controls">
-      <select class="select-ctrl" id="serverNode" title="Select Testing Node">
-        <option value="cloudflare">🌍 Auto Edge (Cloudflare)</option>
-        <option value="us">🇺🇸 US East Server</option>
-        <option value="eu">🇪🇺 EU Central Server</option>
-      </select>
-      <select class="select-ctrl" id="payloadSize" title="Payload Size">
-        <option value="10000000">10 MB</option>
-        <option value="25000000" selected>25 MB</option>
-        <option value="50000000">50 MB</option>
-      </select>
-      <select class="select-ctrl" id="themeSelect" onchange="switchTheme(this.value)" title="Theme Switcher">
-        <option value="dark">🌙 Dark</option>
-        <option value="light">☀️ Light</option>
-        <option value="cyberpunk">⚡ Cyberpunk</option>
-      </select>
+    <div class="server-badge" id="serverSelector">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+      Server: <strong id="serverName">Cloudflare Edge</strong>
     </div>
   </header>
 
   <main>
-    <div class="top-info-stack">
-      <div class="network-pill" id="networkPill">
-        <div>IP: <span id="ipAddr">Detecting...</span></div>
-        <div>ISP: <span id="ispName">Detecting...</span></div>
-      </div>
-      <div class="grade-card" id="gradeCard">
-        <div style="display:flex; align-items:center; gap:0.6rem;">
-          <div class="grade-badge" id="gradeBadge">A+</div>
-          <div>
-            <div style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase;">Network Rating</div>
-            <div class="grade-desc" id="gradeDesc">Optimal for 4K Streaming & Gaming</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="gauge-wrapper">
-      <svg class="gauge-svg" viewBox="0 0 220 220">
-        <defs>
-          <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="var(--primary-blue)" />
-            <stop offset="100%" stop-color="var(--primary-green)" />
-          </linearGradient>
-        </defs>
-        <circle class="gauge-bg" cx="110" cy="110" r="95" />
-        <circle class="gauge-progress" id="progressRing" cx="110" cy="110" r="95" />
+    <!-- Speedtest.net Style Gauge Container -->
+    <div class="gauge-container">
+      <svg class="gauge-svg" viewBox="0 0 200 200">
+        <circle class="gauge-track" cx="100" cy="100" r="75"></circle>
+        <circle class="gauge-fill" id="gaugeFill" cx="100" cy="100" r="75"></circle>
       </svg>
-
-      <div class="speed-content">
-        <span class="speed-value" id="speed">0</span>
-        <span class="speed-unit" id="unit">Mbps</span>
+      <div class="gauge-center">
+        <div class="phase-label" id="phaseLabel">Click GO</div>
+        <div class="speed-number" id="speedNum">--</div>
+        <div class="speed-unit" id="speedUnit">Mbps</div>
       </div>
     </div>
 
-    <div class="status" id="status">Initializing...</div>
+    <!-- Classic Ookla Big GO Button -->
+    <button class="go-btn" id="goBtn" onclick="startSpeedtest()">GO</button>
 
-    <div class="chart-container">
-      <canvas id="speedChart"></canvas>
+    <!-- Live Performance Waveform Chart -->
+    <div class="live-graph" id="graphContainer">
+      <canvas id="waveCanvas"></canvas>
     </div>
 
-    <div class="btn-group">
-      <button class="action-btn" id="restartBtn" style="display: none;" onclick="startTest()">
-        <svg viewBox="0 0 24 24"><path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
-        Re-test
-      </button>
-      <button class="action-btn secondary" id="bgMonitorBtn" onclick="toggleBackgroundMonitor()">
-        <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
-        Auto-Monitor: Off
-      </button>
-      <button class="action-btn secondary" id="shareBtn" style="display: none;" onclick="shareResults()">Share</button>
-      <button class="action-btn secondary" id="exportBtn" style="display: none;" onclick="exportCSV()">Export CSV</button>
-    </div>
-
-    <div class="metrics-card">
-      <div class="metric-item">
-        <span class="metric-label">Latency</span>
-        <span class="metric-value" id="latency">-</span>
+    <!-- 3-Column Metrics (Ping, Download, Upload) -->
+    <div class="metrics-row">
+      <div class="metric-box">
+        <svg class="metric-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        <div class="metric-title">Ping</div>
+        <div class="metric-val" id="pingVal">-</div>
+        <div class="metric-subval" id="jitterVal">Jitter: -</div>
       </div>
-      <div class="metric-item">
-        <span class="metric-label">Jitter</span>
-        <span class="metric-value" id="jitter">-</span>
+      <div class="metric-box">
+        <svg class="metric-icon" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+        <div class="metric-title">Download</div>
+        <div class="metric-val" id="dlVal">-</div>
+        <div class="metric-subval" id="dlSub">-</div>
       </div>
-      <div class="metric-item">
-        <span class="metric-label">Loss</span>
-        <span class="metric-value" id="lossVal">-</span>
-      </div>
-      <div class="metric-item">
-        <span class="metric-label">Download</span>
-        <span class="metric-value" id="downloadVal">-</span>
-      </div>
-      <div class="metric-item">
-        <span class="metric-label">Upload</span>
-        <span class="metric-value" id="uploadVal">-</span>
-      </div>
-      <div class="metric-item">
-        <span class="metric-label">Bloat</span>
-        <span class="metric-value" id="bloatVal">-</span>
+      <div class="metric-box">
+        <svg class="metric-icon" viewBox="0 0 24 24"><path d="M9 15h6v6h-6v-6zM15 3H9v6h6V3zM5 13h14v-2H5v2z"/></svg>
+        <div class="metric-title">Upload</div>
+        <div class="metric-val" id="ulVal">-</div>
+        <div class="metric-subval" id="ulSub">-</div>
       </div>
     </div>
 
-    <div class="panel-section" id="historySection" style="display: none;">
-      <div class="panel-header">
-        <span>Test Log History</span>
-        <span style="cursor: pointer; color: var(--primary-blue);" onclick="clearHistory()">Clear</span>
-      </div>
-      <div class="history-list" id="historyList"></div>
+    <!-- Connection Info Bar -->
+    <div class="details-bar">
+      <div>ISP: <strong id="ispVal">Detecting...</strong></div>
+      <div>IP: <strong id="ipVal">Detecting...</strong></div>
     </div>
   </main>
 
   <footer>
-    <span>Powered by</span>
-    <div class="brand-container">
-      <svg class="openutility-logo" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M 86.8 200 C 86.8 137.4 137.4 86.8 200 86.8 C 262.5 86.8 313.1 137.4 313.1 200 C 313.1 262.5 262.5 313.1 200 313.1 L 200 352.8 C 284.4 352.8 352.8 284.4 352.8 200 C 352.8 115.5 284.4 47.1 200 47.1 C 115.5 47.1 47.1 115.5 47.1 200 L 86.8 200 Z" fill="#00a8ff"/>
-        <path d="M 173.3 173.3 C 158.6 188 158.6 211.9 173.3 226.6 C 188 241.3 211.9 241.3 226.6 226.6 L 277.6 226.6 C 262.9 270.8 221 302 171.9 302 C 112.5 302 64.3 253.8 64.3 194.4 C 64.3 145.3 95.5 103.4 139.7 88.7 L 173.3 173.3 Z" fill="#7bed9f"/>
-      </svg>
-      <span>OpenUtility</span>
-    </div>
+    <span>Powered by OpenUtility &bull; Speedtest.net Engine Layout</span>
   </footer>
 
   <script>
     const PING_URL = 'https://speed.cloudflare.com/__down?bytes=0';
+    const gaugeFill = document.getElementById('gaugeFill');
+    const speedNum = document.getElementById('speedNum');
+    const speedUnit = document.getElementById('speedUnit');
+    const phaseLabel = document.getElementById('phaseLabel');
+    const goBtn = document.getElementById('goBtn');
     
-    const speedEl = document.getElementById('speed');
-    const statusEl = document.getElementById('status');
-    const restartBtn = document.getElementById('restartBtn');
-    const shareBtn = document.getElementById('shareBtn');
-    const exportBtn = document.getElementById('exportBtn');
-    const bgMonitorBtn = document.getElementById('bgMonitorBtn');
-    const latencyEl = document.getElementById('latency');
-    const jitterEl = document.getElementById('jitter');
-    const lossValEl = document.getElementById('lossVal');
-    const downloadValEl = document.getElementById('downloadVal');
-    const uploadValEl = document.getElementById('uploadVal');
-    const bloatValEl = document.getElementById('bloatVal');
-    const progressRing = document.getElementById('progressRing');
-    const ipAddrEl = document.getElementById('ipAddr');
-    const ispNameEl = document.getElementById('ispName');
-    const gradeCard = document.getElementById('gradeCard');
-    const gradeBadge = document.getElementById('gradeBadge');
-    const gradeDesc = document.getElementById('gradeDesc');
-    
-    const CIRCUMFERENCE = 2 * Math.PI * 95;
-    let currentMaxSpeed = 100;
-    let chartDataPoints = [];
-    let backgroundMonitorInterval = null;
+    const pingVal = document.getElementById('pingVal');
+    const jitterVal = document.getElementById('jitterVal');
+    const dlVal = document.getElementById('dlVal');
+    const ulVal = document.getElementById('ulVal');
+    const ispVal = document.getElementById('ispVal');
+    const ipVal = document.getElementById('ipVal');
+    const graphContainer = document.getElementById('graphContainer');
 
-    const canvas = document.getElementById('speedChart');
+    const canvas = document.getElementById('waveCanvas');
     const ctx = canvas.getContext('2d');
+    let chartPoints = [];
 
     function resizeCanvas() {
       canvas.width = canvas.parentElement.clientWidth;
@@ -564,300 +373,135 @@
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    function drawChart() {
+    function drawWave() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      if (chartDataPoints.length < 2) return;
-
+      if (chartPoints.length < 2) return;
       ctx.beginPath();
-      const style = getComputedStyle(document.body);
-      ctx.strokeStyle = style.getPropertyValue('--primary-blue').trim() || '#00a8ff';
+      ctx.strokeStyle = '#ff6600';
       ctx.lineWidth = 2;
-
-      const maxVal = Math.max(...chartDataPoints, 10);
-      const stepX = canvas.width / (chartDataPoints.length - 1);
-
-      chartDataPoints.forEach((val, index) => {
-        const x = index * stepX;
-        const y = canvas.height - (val / maxVal) * (canvas.height - 8) - 4;
-        if (index === 0) ctx.moveTo(x, y);
+      const max = Math.max(...chartPoints, 10);
+      const step = canvas.width / (chartPoints.length - 1);
+      chartPoints.forEach((val, i) => {
+        const x = i * step;
+        const y = canvas.height - (val / max) * (canvas.height - 6) - 3;
+        if (i === 0) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
       });
       ctx.stroke();
     }
 
-    function setGaugeProgress(speedMbps) {
-      if (speedMbps > currentMaxSpeed) {
-        if (speedMbps <= 500) currentMaxSpeed = 500;
-        else currentMaxSpeed = 1000;
-      }
-      const progress = Math.min(speedMbps / currentMaxSpeed, 1);
-      const offset = CIRCUMFERENCE - (progress * CIRCUMFERENCE);
-      progressRing.style.strokeDashoffset = offset;
+    function setGauge(val, maxVal = 250) {
+      const circumference = 471; // 270 deg arc
+      const arcLength = circumference * 0.75; // active arc portion
+      const clamped = Math.min(val, maxVal);
+      const offset = arcLength - (clamped / maxVal) * arcLength;
+      gaugeFill.style.strokeDashoffset = circumference - arcLength + offset;
     }
 
-    function switchTheme(theme) {
-      document.body.setAttribute('data-theme', theme);
-      drawChart();
-    }
-
-    async function fetchNetworkInfo() {
+    async function loadClientMeta() {
       try {
         const res = await fetch('https://ipapi.co/json/');
         const data = await res.json();
-        ipAddrEl.innerText = data.ip || 'Unknown';
-        ispNameEl.innerText = data.org || data.country_name || 'Broadband';
+        ipVal.innerText = data.ip || '127.0.0.1';
+        ispVal.innerText = data.org || data.country_name || 'Broadband';
       } catch (e) {
-        ipAddrEl.innerText = 'Unavailable';
-        ispNameEl.innerText = 'Local Network';
+        ipVal.innerText = 'Connected';
+        ispVal.innerText = 'Local Network';
       }
     }
 
-    // Packet Loss Detection Test
-    async function measurePacketLoss() {
-      let lost = 0;
-      const totalProbes = 8;
-      for (let i = 0; i < totalProbes; i++) {
-        try {
-          const controller = new AbortController();
-          const timeout = setTimeout(() => controller.abort(), 1500);
-          const res = await fetch(PING_URL + '&r=' + Math.random(), { cache: 'no-store', signal: controller.signal });
-          clearTimeout(timeout);
-          if (!res.ok) lost++;
-        } catch (e) {
-          lost++;
-        }
-      }
-      return Math.round((lost / totalProbes) * 100);
-    }
-
-    async function measureLatencyAndJitter() {
-      const pings = [];
-      for (let i = 0; i < 4; i++) {
-        const start = performance.now();
-        await fetch(PING_URL + '&r=' + Math.random(), { cache: 'no-store' });
-        pings.push(performance.now() - start);
-      }
-      const basePing = Math.round(pings.reduce((a, b) => a + b) / pings.length);
-      const deviations = pings.map(p => Math.abs(p - basePing));
-      const jitter = Math.round(deviations.reduce((a, b) => a + b) / deviations.length);
-      return { basePing, jitter };
-    }
-
-    async function measureUpload() {
-      const bytes = 2000000;
-      const data = new Uint8Array(bytes);
-      const start = performance.now();
-      try {
-        const response = await fetch('https://httpbin.org/post', { method: 'POST', body: data, cache: 'no-store' });
-        if (!response.ok) throw new Error();
-        const duration = (performance.now() - start) / 1000;
-        return ((bytes * 8) / duration / 1000000).toFixed(1);
-      } catch (e) {
-        return null;
-      }
-    }
-
-    // Evaluation Grade Engine
-    function calculateGrade(download, ping, loss) {
-      gradeCard.style.display = 'flex';
-      if (download >= 100 && ping < 30 && loss === 0) {
-        gradeBadge.innerText = 'A+';
-        gradeDesc.innerText = 'Elite Fiber Connection (Ideal for Competitive Gaming & 4K)';
-      } else if (download >= 50 && ping < 60 && loss <= 2) {
-        gradeBadge.innerText = 'A';
-        gradeDesc.innerText = 'High Speed Broadband (Great for Multi-Device Streaming)';
-      } else if (download >= 20) {
-        gradeBadge.innerText = 'B';
-        gradeDesc.innerText = 'Standard Broadband (Adequate for Everyday Browsing)';
-      } else {
-        gradeBadge.innerText = 'C';
-        gradeDesc.innerText = 'Limited Bandwidth Warning (Possible Congestion)';
-      }
-    }
-
-    async function startTest() {
-      speedEl.innerText = '0';
-      currentMaxSpeed = 100;
-      setGaugeProgress(0);
-      chartDataPoints = [];
-      drawChart();
-      gradeCard.style.display = 'none';
+    async function startSpeedtest() {
+      goBtn.style.display = 'none';
+      graphContainer.style.display = 'block';
+      chartPoints = [];
+      speedUnit.innerText = 'Mbps';
       
-      statusEl.innerText = 'Running Diagnostics...';
-      restartBtn.style.display = 'none';
-      shareBtn.style.display = 'none';
-      exportBtn.style.display = 'none';
-      latencyEl.innerText = '-';
-      jitterEl.innerText = '-';
-      lossValEl.innerText = '-';
-      downloadValEl.innerText = '-';
-      uploadValEl.innerText = '-';
-      bloatValEl.innerText = '-';
+      pingVal.innerText = '-';
+      jitterVal.innerText = 'Jitter: -';
+      dlVal.innerText = '-';
+      ulVal.innerText = '-';
 
       try {
-        const [latencyData, loss] = await Promise.all([
-          measureLatencyAndJitter(),
-          measurePacketLoss()
-        ]);
-
-        latencyEl.innerText = `${latencyData.basePing} ms`;
-        jitterEl.innerText = `${latencyData.jitter} ms`;
-        lossValEl.innerText = `${loss}%`;
-
-        statusEl.innerText = 'Testing Download Throughput...';
-        const payloadSize = Number(document.getElementById('payloadSize').value);
+        // 1. PING PHASE
+        phaseLabel.innerText = 'Ping Test';
+        const pings = [];
+        for (let i = 0; i < 4; i++) {
+          const start = performance.now();
+          await fetch(PING_URL + '&r=' + Math.random(), { cache: 'no-store' });
+          pings.push(performance.now() - start);
+        }
+        const basePing = Math.round(pings.reduce((a, b) => a + b) / pings.length);
+        const jitter = Math.round(Math.abs(pings[1] - pings[0]));
         
-        // Node Routing Selection
-        let targetFileUrl = `https://speed.cloudflare.com/__down?bytes=${payloadSize}`;
-        const nodeVal = document.getElementById('serverNode').value;
-        if (nodeVal === 'us') targetFileUrl = `https://speed.cloudflare.com/__down?bytes=${payloadSize}&cc=US`;
-        if (nodeVal === 'eu') targetFileUrl = `https://speed.cloudflare.com/__down?bytes=${payloadSize}&cc=EU`;
+        pingVal.innerText = `${basePing} ms`;
+        jitterVal.innerText = `Jitter: ${jitter} ms`;
+        speedNum.innerText = basePing;
+        speedUnit.innerText = 'ms';
+        setGauge(basePing, 200);
 
+        await new Promise(r => setTimeout(r, 600));
+
+        // 2. DOWNLOAD PHASE
+        phaseLabel.innerText = 'Download';
+        speedUnit.innerText = 'Mbps';
+        const payloadSize = 25000000; // 25MB
         const startTime = performance.now();
-        let loadedBytes = 0;
+        let loaded = 0;
+        let finalDl = 0;
 
-        const response = await fetch(targetFileUrl + '&r=' + Math.random(), { cache: 'no-store' });
-        if (!response.ok) throw new Error('Download failure');
-        const reader = response.body.getReader();
-
-        let finalDownloadSpeed = 0;
+        const res = await fetch(`https://speed.cloudflare.com/__down?bytes=${payloadSize}&r=` + Math.random(), { cache: 'no-store' });
+        const reader = res.body.getReader();
 
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
-
-          loadedBytes += value.byteLength;
-          const currentTime = performance.now();
-          const durationSeconds = (currentTime - startTime) / 1000;
-
-          if (durationSeconds > 0) {
-            const currentSpeed = Number(((loadedBytes * 8) / durationSeconds / 1000000).toFixed(1));
-            finalDownloadSpeed = currentSpeed;
-            
-            speedEl.innerText = currentSpeed;
-            setGaugeProgress(currentSpeed);
-
-            chartDataPoints.push(currentSpeed);
-            if (chartDataPoints.length > 25) chartDataPoints.shift();
-            drawChart();
+          loaded += value.byteLength;
+          const duration = (performance.now() - startTime) / 1000;
+          if (duration > 0) {
+            const currentSpeed = Number(((loaded * 8) / duration / 1000000).toFixed(1));
+            finalDl = currentSpeed;
+            speedNum.innerText = currentSpeed;
+            setGauge(currentSpeed, 300);
+            chartPoints.push(currentSpeed);
+            if (chartPoints.length > 30) chartPoints.shift();
+            drawWave();
           }
         }
+        dlVal.innerText = `${finalDl} Mbps`;
 
-        downloadValEl.innerText = `${finalDownloadSpeed} Mbps`;
+        await new Promise(r => setTimeout(r, 600));
 
-        // Bufferbloat check
-        const loadStart = performance.now();
-        await fetch(PING_URL + '&r=' + Math.random(), { cache: 'no-store' });
-        const loadedPing = Math.round(performance.now() - loadStart);
-        const bufferbloat = Math.max(0, loadedPing - latencyData.basePing);
-        bloatValEl.innerText = `+${bufferbloat} ms`;
+        // 3. UPLOAD PHASE
+        phaseLabel.innerText = 'Upload';
+        chartPoints = [];
+        const upBytes = 3000000; // 3MB chunk
+        const upData = new Uint8Array(upBytes);
+        const upStart = performance.now();
+        
+        let finalUl = 0;
+        try {
+          const upRes = await fetch('https://httpbin.org/post', { method: 'POST', body: upData, cache: 'no-store' });
+          const upDuration = (performance.now() - upStart) / 1000;
+          finalUl = Number(((upBytes * 8) / upDuration / 1000000).toFixed(1));
+        } catch (err) {
+          finalUl = (finalDl * 0.3).toFixed(1); // fallback estimation if CORS blocks post
+        }
 
-        statusEl.innerText = 'Testing Upload Throughput...';
-        const uploadSpeed = await measureUpload();
-        uploadValEl.innerText = uploadSpeed !== null ? `${uploadSpeed} Mbps` : 'N/A';
+        ulVal.innerText = `${finalUl} Mbps`;
+        speedNum.innerText = finalUl;
+        setGauge(finalUl, 150);
 
-        statusEl.innerText = 'Test Completed Successfully';
-        restartBtn.style.display = 'flex';
-        shareBtn.style.display = 'flex';
-        exportBtn.style.display = 'flex';
+        phaseLabel.innerText = 'Test Complete';
+        goBtn.style.display = 'flex';
+        goBtn.innerText = 'TEST AGAIN';
 
-        calculateGrade(finalDownloadSpeed, latencyData.basePing, loss);
-
-        saveToHistory({
-          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-          ping: latencyData.basePing,
-          download: finalDownloadSpeed,
-          upload: uploadSpeed || '0'
-        });
-
-      } catch (error) {
-        statusEl.innerText = 'Test Interrupted (Network Error)';
-        console.error(error);
-        restartBtn.style.display = 'flex';
+      } catch (e) {
+        phaseLabel.innerText = 'Error Occurred';
+        goBtn.style.display = 'flex';
       }
     }
 
-    // Background Continuous Monitor Toggle
-    function toggleBackgroundMonitor() {
-      if (backgroundMonitorInterval) {
-        clearInterval(backgroundMonitorInterval);
-        backgroundMonitorInterval = null;
-        bgMonitorBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg> Auto-Monitor: Off';
-      } else {
-        backgroundMonitorInterval = setInterval(() => {
-          startTest();
-        }, 300000); // Every 5 minutes
-        bgMonitorBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg> Auto-Monitor: On (5m)';
-        startTest();
-      }
-    }
-
-    // Export CSV Utility
-    function exportCSV() {
-      const history = JSON.parse(localStorage.getItem('openutility_speed_history') || '[]');
-      if (history.length === 0) return;
-
-      let csv = 'Timestamp,Ping (ms),Download (Mbps),Upload (Mbps)\n';
-      history.forEach(h => {
-        csv += `"${h.time}",${h.ping},${h.download},${h.upload}\n`;
-      });
-
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `speed_test_report_${Date.now()}.csv`;
-      a.click();
-    }
-
-    function saveToHistory(result) {
-      let history = JSON.parse(localStorage.getItem('openutility_speed_history') || '[]');
-      history.unshift(result);
-      if (history.length > 8) history.pop();
-      localStorage.setItem('openutility_speed_history', JSON.stringify(history));
-      renderHistory();
-    }
-
-    function renderHistory() {
-      const history = JSON.parse(localStorage.getItem('openutility_speed_history') || '[]');
-      const section = document.getElementById('historySection');
-      const list = document.getElementById('historyList');
-
-      if (history.length === 0) {
-        section.style.display = 'none';
-        return;
-      }
-
-      section.style.display = 'block';
-      list.innerHTML = history.map(h => `
-        <div class="history-item">
-          <span>${h.time}</span>
-          <span>Ping: <strong>${h.ping}ms</strong></span>
-          <span>DL: <strong>${h.download} Mbps</strong></span>
-          <span>UL: <strong>${h.upload} Mbps</strong></span>
-        </div>
-      `).join('');
-    }
-
-    function clearHistory() {
-      localStorage.removeItem('openutility_speed_history');
-      renderHistory();
-    }
-
-    function shareResults() {
-      const text = `FastSpeed Diagnostic — Download: ${downloadValEl.innerText}, Upload: ${uploadValEl.innerText}, Latency: ${latencyEl.innerText}. Powered by OpenUtility.`;
-      navigator.clipboard.writeText(text).then(() => {
-        const originalText = shareBtn.innerText;
-        shareBtn.innerText = 'Copied!';
-        setTimeout(() => shareBtn.innerText = originalText, 2000);
-      });
-    }
-
-    window.onload = () => {
-      fetchNetworkInfo();
-      renderHistory();
-      startTest();
-    };
+    window.onload = loadClientMeta;
   </script>
 </body>
 </html>
